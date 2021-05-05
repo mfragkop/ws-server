@@ -1,0 +1,5 @@
+const API_KEY = 'tNr6nfLCDOU7SKhn4S9fZ1koBYqCrUjm';
+
+const API_SECRET = '7s7yCQw87TdUlKnTRP6SDlXfTGBpGqDP';
+
+export { API_KEY, API_SECRET };
