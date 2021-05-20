@@ -1,3 +1,16 @@
+import winston from 'winston';
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.prettyPrint()
+  ),
+  transports: [
+    new winston.transports.File({ filename: './pong.log', level: 'info' }),
+  ],
+});
+
 const handleMessage = (ws, message) => {
   const msg = JSON.parse(message);
   console.log(msg);
@@ -19,8 +32,8 @@ const handleMessage = (ws, message) => {
 };
 
 const ping = (ws) => {
-  console.log()
   ws.send('{ "type": "pong" }');
+  logger.log('info','Pong');
 };
 
 const subscribe = (ws, message) => {
