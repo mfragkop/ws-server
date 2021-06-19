@@ -15,8 +15,9 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws, request) => {
   if (authorize(request.headers)) {
+    console.log('authorized connection');
     ws.on('message', (message) => {
-      handleMessage(ws, message);
+      handleMessage(ws, message, request.headers.apikey);
     });
     ws.send('Connected');
   }
