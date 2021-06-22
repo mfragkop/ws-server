@@ -2,8 +2,8 @@ import crypto from 'crypto';
 
 const users = [];
 
-const createUser = (apiKey, apiSecret) => {
-  const user = { apiKey: apiKey, apiSecret: apiSecret };
+const createUser = (username, apiKey, apiSecret) => {
+  const user = { username: username, apiKey: apiKey, apiSecret: apiSecret };
   users.push(user);
   return user;
 };
@@ -27,5 +27,10 @@ const authorize = ({ date, apikey, authorization }) => {
   return authorization === expected;
 };
 
-export { createUser, authorize };
+const getUsername = (apiKey) => {
+  const user = users.find(item => item.apiKey === apiKey);
+  return user?.username;
+}
+
+export { createUser, authorize, getUsername };
 

@@ -1,45 +1,10 @@
-import winston from 'winston';
-import { API_KEY_1 } from '../data/credentialsUser1.js';
-import { API_KEY_2 } from '../data/credentialsUser2.js';
+import { logger, loggerUser1, loggerUser2 } from '../app.js';
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.prettyPrint()
-  ),
-  transports: [
-    new winston.transports.File({ filename: './pong.log', level: 'info' }),
-  ],
-});
-
-const loggerUser1 = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.prettyPrint()
-  ),
-  transports: [
-    new winston.transports.File({ filename: './pong-user1.log', level: 'info' }),
-  ],
-});
-
-const loggerUser2 = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.prettyPrint()
-  ),
-  transports: [
-    new winston.transports.File({ filename: './pong-user2.log', level: 'info' }),
-  ],
-});
-
-const handleMessage = (ws, message, apiKey) => {
+const handleMessage = (ws, message, username) => {
   const msg = JSON.parse(message);
   switch(msg.type) {
     case 'ping':
-      ping(ws, apiKey);
+      ping(ws, username);
       break;
     case 'subscribe':
       subscribe(ws, msg);
@@ -54,14 +19,14 @@ const handleMessage = (ws, message, apiKey) => {
   }
 };
 
-const ping = (ws, apiKey) => {
-  console.log('ping received');
+const ping = (ws, username) => {
+  console.log(`ping from ${username}`)
   ws.send('{ "type": "pong" }');
-  logger.log('info',`Pong to: ${apiKey}`);
-  if (apiKey === API_KEY_1) {
+  logger.log('info',`Pong to: ${username}`);
+  if (username === 'user1') {
     loggerUser1.log('info', 'pong');
   }
-  if (apiKey === API_KEY_2) {
+  if (username === 'user2') {
     loggerUser2.log('info', 'pong');
   }
 };
